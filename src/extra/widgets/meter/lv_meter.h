@@ -1,3 +1,4 @@
+//@formatter:off
 /**
  * @file lv_meter.h
  *
@@ -30,7 +31,7 @@ extern "C" {
  *      TYPEDEFS
  **********************/
 
-typedef struct {
+typedef struct _lv_meter_scale_t {
     lv_color_t tick_color;
     uint16_t tick_cnt;
     uint16_t tick_length;
@@ -48,6 +49,8 @@ typedef struct {
     int16_t r_mod;
     uint16_t angle_range;
     int16_t rotation;
+
+    void (*label_callback)(struct _lv_meter_scale_t *scale, char *buf, size_t buf_size, int32_t value_of_line);
 } lv_meter_scale_t;
 
 enum {
