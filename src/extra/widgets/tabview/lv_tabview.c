@@ -28,6 +28,7 @@ static void lv_tabview_destructor(const lv_obj_class_t * class_p, lv_obj_t * obj
 static void lv_tabview_event(const lv_obj_class_t * class_p, lv_event_t * e);
 static void btns_value_changed_event_cb(lv_event_t * e);
 static void cont_scroll_end_event_cb(lv_event_t * e);
+static lv_anim_enable_t is_animation_enabled( lv_tabview_t *tv );
 
 /**********************
  *  STATIC VARIABLES
@@ -308,7 +309,7 @@ static void btns_value_changed_event_cb(lv_event_t * e)
 
     lv_obj_t * tv = lv_obj_get_parent(btns);
     uint32_t id = lv_btnmatrix_get_selected_btn(btns);
-    lv_tabview_set_act(tv, id, LV_ANIM_OFF);
+    lv_tabview_set_act(tv, id, is_animation_enabled(tv));
 }
 
 static void cont_scroll_end_event_cb(lv_event_t * e)
@@ -344,9 +345,20 @@ static void cont_scroll_end_event_cb(lv_event_t * e)
         if(t < 0) t = 0;
         bool new_tab = false;
         if(t != lv_tabview_get_tab_act(tv)) new_tab = true;
-        lv_tabview_set_act(tv, t, LV_ANIM_ON);
+        lv_tabview_set_act(tv, t, is_animation_enabled(tv_obj));
 
         if(new_tab) lv_event_send(tv, LV_EVENT_VALUE_CHANGED, NULL);
     }
 }
+
+void lv_tabview_set_options(lv_obj_t *obj, lv_tabview_options_t options) {
+    LV_ASSERT_OBJ( obj, MY_CLASS );
+    lv_tabview_t *tabview = (lv_tabview_t *) obj;
+    tabview->options = options;
+}
+
+static lv_anim_enable_t is_animation_enabled(lv_tabview_t *tv) {
+    return tv->options.dont_animate ? LV_ANIM_OFF : LV_ANIM_ON;
+}
+
 #endif /*LV_USE_TABVIEW*/

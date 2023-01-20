@@ -26,11 +26,16 @@ extern "C" {
  **********************/
 
 typedef struct {
+    unsigned int dont_animate: 1;
+} lv_tabview_options_t;
+
+typedef struct {
     lv_obj_t obj;
     const char ** map;
     uint16_t tab_cnt;
     uint16_t tab_cur;
     lv_dir_t tab_pos;
+    lv_tabview_options_t options;
 } lv_tabview_t;
 
 extern const lv_obj_class_t lv_tabview_class;
@@ -51,6 +56,8 @@ lv_obj_t * lv_tabview_get_tab_btns(lv_obj_t * tv);
 void lv_tabview_set_act(lv_obj_t * obj, uint32_t id, lv_anim_enable_t anim_en);
 
 uint16_t lv_tabview_get_tab_act(lv_obj_t * tv);
+
+void lv_tabview_set_options(lv_obj_t *tv, lv_tabview_options_t options);
 
 /**********************
  *      MACROS
